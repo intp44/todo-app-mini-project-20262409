@@ -10,6 +10,16 @@ function App() {
   const [hour, setHour] = useState('00');
   const [minute, setMinute] = useState('00');
   const [second, setSecond] = useState('00');
+  useEffect(() => {
+    const now = new Date();
+    // 현재 시와 분을 가져와서 두 자리 문자열(09, 12 등)로 만듭니다.
+    const currentHour = now.getHours().toString().padStart(2, '0');
+    const currentMinute = now.getMinutes().toString().padStart(2, '0');
+    
+    setHour(currentHour);
+    setMinute(currentMinute);
+    // 초(second)는 보통 정각에 맞추는 게 편하니 '00' 그대로 둡니다.
+  }, []);
 
   // 최신 todos를 타이머 안에서 참조하기 위한 ref
   const todosRef = useRef([]);
@@ -69,12 +79,16 @@ function App() {
       });
       
       setNewTodo('');
-      setHour('00'); setMinute('00'); setSecond('00');
+      const now = new Date();
+    setHour(now.getHours().toString().padStart(2, '0'));
+      setMinute(now.getMinutes().toString().padStart(2, '0'));
+      setSecond('00');
       fetchTodos();
     } catch (err) {
       console.error("추가 실패", err);
     }
   };
+  
 
   const toggleTodo = async (id, completed) => {
     try {
@@ -95,7 +109,7 @@ function App() {
   return (
     <div className="dark-theme">
       <div className="app-container">
-        <h1 className="main-title">Smart Task Manager</h1>
+        <h1 className="main-title">Smart Alarmed TODO List</h1>
         
         <div className="input-group">
           <input 
@@ -106,21 +120,36 @@ function App() {
             placeholder="수행할 작업을 입력하세요..." 
           />
           <div className="time-picker-custom">
-            <input type="number" min="0" max="23" value={hour} 
-              onChange={(e) => setHour(e.target.value)} 
-              onBlur={(e) => handleBlur(setHour, e.target.value)}
-              placeholder="HH" />
-            <span>:</span>
-            <input type="number" min="0" max="59" value={minute} 
-              onChange={(e) => setMinute(e.target.value)} 
-              onBlur={(e) => handleBlur(setMinute, e.target.value)}
-              placeholder="mm" />
-            <span>:</span>
-            <input type="number" min="0" max="59" value={second} 
-              onChange={(e) => setSecond(e.target.value)} 
-              onBlur={(e) => handleBlur(setSecond, e.target.value)}
-              placeholder="ss" />
-          </div>
+           <input 
+    type="number" 
+    min="0" 
+    max="23" 
+    value={hour} 
+    onChange={(e) => setHour(e.target.value.slice(0, 2))} // 최대 2자리 제한 추가
+    onBlur={(e) => handleBlur(setHour, e.target.value)}
+    placeholder="HH" 
+  />
+  <span>:</span>
+            <input 
+    type="number" 
+    min="0" 
+    max="59" 
+    value={minute} 
+    onChange={(e) => setMinute(e.target.value.slice(0, 2))} // 최대 2자리 제한 추가
+    onBlur={(e) => handleBlur(setMinute, e.target.value)}
+    placeholder="mm" 
+  />
+  <span>:</span>
+            <input 
+    type="number" 
+    min="0" 
+    max="59" 
+    value={second} 
+    onChange={(e) => setSecond(e.target.value.slice(0, 2))} // 최대 2자리 제한 추가
+    onBlur={(e) => handleBlur(setSecond, e.target.value)}
+    placeholder="ss" 
+  />
+</div>  
           <button className="add-btn" onClick={addTodo}>추가</button>
         </div>
         <div className="todo-grid">
