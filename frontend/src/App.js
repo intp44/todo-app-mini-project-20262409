@@ -33,14 +33,7 @@ function App() {
     return () => clearInterval(timer);
   }, []);
 
-  const fetchTodos = async () => {
-    try {
-      const res = await axios.get(API_URL);
-      setTodos(res.data);
-    } catch (err) {
-      console.error("데이터 로딩 실패", err);
-    }
-  };
+  
 
   const checkAlarms = () => {
     const now = new Date();
