@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './App.css';
 
-const API_URL = 'http://localhost:5001/api/todos';
+const API_URL = 'https://todo-app-mini-project-20262409.vercel.app/api/todos';
 
 function App() {
   const [todos, setTodos] = useState([]);
