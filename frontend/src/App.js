@@ -23,6 +23,15 @@ function App() {
   useEffect(() => {
     todosRef.current = todos;
   }, [todos]);
+  const fetchTodos = async () => {
+  try {
+    const res = await axios.get(API_URL);
+    setTodos(Array.isArray(res.data) ? res.data : []);
+  } catch (err) {
+    console.error("데이터 로딩 실패", err);
+    setTodos([]);
+  }
+};
 
   // 초기 데이터 로딩 및 알람 타이머 설정
   useEffect(() => {
